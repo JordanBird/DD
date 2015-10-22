@@ -1,0 +1,4 @@
+Name, Damage, Magazine Capacity, Ammo Given, Reload Time, Fire Speed, FPS Image Set, Fire Sound, Reload Sound, Pick Up Image
+Pistol, 2, 12, 48, 1.5, 0.4, Sprites/Weapons/Pistol/FPS Set/, /Sounds/Pistol Fire.wav, /Sounds/Pistol Reload.wav, Sprites/Weapons/Pistol/Pickup.png
+Assault Rifle, 5, 30, 60, 3, 0.3, Sprites/Weapons/Assault Rifle/FPS Set/, /Sounds/Assault Rifle Fire.wav, /Sounds/Assault Reload.wav, Sprites/Weapons/Assault Rifle/Pickup.png
+Rocket Launcher, 20, 1, 6, 0, 1, Sprites/Weapons/Rocket Launcher/FPS Set/, /Sounds/Rocket Launcher Fire.wav, /Sounds/Rocket Launcher Reload.wav, Sprites/Weapons/Rocket Launcher/Pickup.png
