@@ -11,8 +11,8 @@ public class DDPlayerController : MonoBehaviour
 
     float rotationSpeed = 2;
 
-    float jumpSpeed = 300;
-    float crouchedJumpSpeed = 150;
+    float jumpSpeed = 5;
+    float crouchedJumpSpeed = 2.5f;
 
     Vector3 normalCameraPosition = new Vector3(0, 0, 0);
     Vector3 crouchCameraPosition = new Vector3(0, -0.5f, 0);
@@ -60,16 +60,16 @@ public class DDPlayerController : MonoBehaviour
         sprinting = Input.GetKey(KeyCode.LeftShift);
         crouching = Input.GetKey(KeyCode.LeftControl);
 
-        Debug.Log(Physics.CheckSphere(new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y - 0.1f, capsuleCollider.bounds.center.z), 0.1f, playerLayer));
+        //Debug.Log(Physics.CheckSphere(new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y - 0.1f, capsuleCollider.bounds.center.z), 0.1f, playerLayer));
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (Physics.CheckSphere(new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y - 0.1f, capsuleCollider.bounds.center.z), 0.1f, playerLayer))
             {
                 if (crouching)
-                    rigidBody.AddForce(Vector3.up * crouchedJumpSpeed);
+                    rigidBody.velocity = new Vector3(0, crouchedJumpSpeed, 0);
                 else
-                    rigidBody.AddForce(Vector3.up * jumpSpeed);
+                    rigidBody.velocity = new Vector3(0, jumpSpeed, 0);
             }
             else
             {
@@ -77,8 +77,7 @@ public class DDPlayerController : MonoBehaviour
                 {
                     Debug.Log("Wall Jump");
 
-                    rigidBody.AddForce(Vector3.forward * jumpSpeed);
-                    rigidBody.AddForce(Vector3.up * (jumpSpeed / 2));
+                    rigidBody.velocity = new Vector3(jumpSpeed, jumpSpeed / 2, 0);
                 }
             }
         }
@@ -87,7 +86,7 @@ public class DDPlayerController : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        Debug.Log(capsuleCollider.bounds.extents.z);
+        //Debug.Log(rigidBody.velocity.y);
 
         //Get movement input.
         pitch += rotationSpeed * Input.GetAxis("Mouse Y");
@@ -175,10 +174,5 @@ public class DDPlayerController : MonoBehaviour
 
             head.transform.localEulerAngles = new Vector3(head.transform.localEulerAngles.x, head.transform.localEulerAngles.y, angle);
         }
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(transform.position + transform.forward, 0.1f);
     }
 }

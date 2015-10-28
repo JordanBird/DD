@@ -8,13 +8,13 @@ public class Weapon: MonoBehaviour
     FireType fireType = FireType.Raycast; //Debug.
 
     string weaponName = "";
-    float damage = 0;
-    int ammoInCurrentMagazine = 0;
-    int totalAmmo = 0;
+    int damage = 100;
+    int ammoInCurrentMagazine = 10;
+    int totalAmmo = 20;
 
     float reloadTime = 0;
-    float fireSpeed = 0;
-    int magazineCapacity = 0;
+    float fireSpeed = 0.2f;
+    int magazineCapacity = 10;
 
     Sprite normal;
     Sprite firing;
@@ -35,6 +35,7 @@ public class Weapon: MonoBehaviour
 	void Start ()
     {
         Start_GetAudioSource();
+        NotificationCenter.DefaultCenter().PostNotification(gameObject, "PlayerAmmoChanged", ammoInCurrentMagazine.ToString() + "/" + totalAmmo.ToString());
     }
 	
     private void Start_GetAudioSource()
@@ -54,18 +55,24 @@ public class Weapon: MonoBehaviour
 
     public void Fire()
     {
+        if (busy)
+            return;
+
         //Instatiate Bullet
         //Raycast Code
         //Play Fire Sound
         if (ammoInCurrentMagazine <= 0)
             return;
 
+        Fire_Raycast();
         Fire_ChangeAmmo();
+        StartCoroutine(SetWeaponToBusy(fireSpeed));
     }
 
     public void Fire_ChangeAmmo()
     {
         ammoInCurrentMagazine--;
+        NotificationCenter.DefaultCenter().PostNotification(gameObject, "PlayerAmmoChanged", ammoInCurrentMagazine.ToString() + "/" + totalAmmo.ToString());
     }
 
     private void Fire_PlayFireSound()
@@ -84,7 +91,11 @@ public class Weapon: MonoBehaviour
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity))
         {
-            hit.transform.gameObject.SendMessage("ReceiveDamage", damage);
+            try
+            {
+                hit.transform.gameObject.GetComponent<Enemy>().ReceiveDamage(damage); //TODO: Create a health object for universal health/damage.
+            }
+            catch { }
         }
     }
 
@@ -114,6 +125,8 @@ public class Weapon: MonoBehaviour
             ammoInCurrentMagazine += totalAmmo;
             totalAmmo = 0;
         }
+
+        NotificationCenter.DefaultCenter().PostNotification(gameObject, "PlayerAmmoChanged", ammoInCurrentMagazine.ToString() + "/" + totalAmmo.ToString());
     }
 
     private void Reload_PlayReloadSound()
