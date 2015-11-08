@@ -17,8 +17,9 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetMouseButton(0))
-            activeWeapon.Fire();
+        // 0 for auto, 1 for manual
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(1))
+            activeWeapon.Shoot();
 
         if (Input.GetKeyDown(KeyCode.R))
             activeWeapon.Reload();

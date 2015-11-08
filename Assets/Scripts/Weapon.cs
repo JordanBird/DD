@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Weapon: MonoBehaviour
+public class Weapon_J: MonoBehaviour
 {
     public enum FireType { Raycast, Projectile };
 
@@ -37,7 +37,7 @@ public class Weapon: MonoBehaviour
         Start_GetAudioSource();
         NotificationCenter.DefaultCenter().PostNotification(gameObject, "PlayerAmmoChanged", ammoInCurrentMagazine.ToString() + "/" + totalAmmo.ToString());
     }
-	
+
     private void Start_GetAudioSource()
     {
         try
@@ -50,7 +50,6 @@ public class Weapon: MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    
 	}
 
     public void Fire()

@@ -54,8 +54,8 @@ public class DDPlayerController : MonoBehaviour
 	
     void Update()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
         sprinting = Input.GetKey(KeyCode.LeftShift);
         crouching = Input.GetKey(KeyCode.LeftControl);
