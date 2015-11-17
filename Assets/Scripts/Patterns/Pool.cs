@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// Can be attached as a component or created as a container.
+// Can be attached as a component or created as a container. Make sure not to hang on to (or manually reactivate) pooled objects after taking them or unexpected behaviour might occur.
 public class Pool : MonoBehaviour
 {
     [SerializeField]
@@ -90,16 +90,15 @@ public class Pool : MonoBehaviour
             // Update all items in the list.
             Refresh();
 
-            // Increase the active tally if this value isn't active.
+            // Increase the potentially active tally if this value isn't active.
             if (!_list.Last.Value.activeSelf)
             {
                 //Debug.Log("new active");
                 ++_numActive;
             }
 
-            // Make the last item inactive and put it at the front of the list.
+            // Make the last item active and put it at the front of the list.
             LinkedListNode<GameObject> last = _list.Last;
-            last.Value.SetActive(true);
             _list.RemoveLast();
             _list.AddFirst(last);
 
@@ -124,14 +123,13 @@ public class Pool : MonoBehaviour
                 LinkedListNode<GameObject> previous = current.Previous;
                 //Debug.Log(previous);
 
-                // Increase the active tally if this value isn't active.
+                // Increase the poteitally active tally if this value isn't active.
                 if (!current.Value.activeSelf)
                 {
                     //Debug.Log("new active");
                     ++_numActive;
                 }
 
-                current.Value.SetActive(true);
                 _list.RemoveLast();
                 _list.AddFirst(current);
 

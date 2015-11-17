@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Attach this to things that should deal damage.
+/// </summary>
 public class DamageSource : MonoBehaviour
 {
     public enum DamageMode { MANUAL, COLLISION_ENTER, COLLISION_STAY }

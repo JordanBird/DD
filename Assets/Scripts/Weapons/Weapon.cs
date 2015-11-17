@@ -20,13 +20,13 @@ public class Weapon : MonoBehaviour
 
     #region Events
     [SerializeField]
-    private UnityEvent _shootSucceedEvent;
+    private UnityEvent _onShootSucceed;
     [SerializeField]
-    private UnityEvent _shootFailEvent;
+    private UnityEvent _onShootFail;
     [SerializeField]
-    private UnityEvent _reloadStartEvent;
+    private UnityEvent _onReloadStart;
     [SerializeField]
-    private UnityEvent _reloadEndEvent;
+    private UnityEvent _onReloadEnd;
     #endregion
 
     #region Connected Components
@@ -54,7 +54,7 @@ public class Weapon : MonoBehaviour
         if (!rearming) {
             if (reloading)
             {
-                _shootFailEvent.Invoke();
+                _onShootFail.Invoke();
             }
             else
             {
@@ -65,6 +65,7 @@ public class Weapon : MonoBehaviour
                     {
                         projectiles[i].transform.position = _muzzles[i].position;
                         projectiles[i].transform.rotation = _muzzles[i].rotation;
+                        projectiles[i].SetActive(true);
                     }
                     Debug.Log(name + ": Shooting succeeded, attempting to fire " + _muzzles.Length + " rounds, firing " + projectiles.Count + " rounds.");
                 }
@@ -75,11 +76,12 @@ public class Weapon : MonoBehaviour
                     {
                         projectile.transform.position = _muzzles[0].position;
                         projectile.transform.rotation = _muzzles[0].rotation;
+                        projectile.SetActive(true);
                     }
                     Debug.Log(name + ": Shooting succeeded, attempting to fire a round, fired " + (projectile != null ? "a round" : "no rounds."));
                 }
                 _rearmCoroutine = StartCoroutine(_Rearm());
-                _shootSucceedEvent.Invoke();
+                _onShootSucceed.Invoke();
             }
         }
     }
@@ -109,11 +111,11 @@ public class Weapon : MonoBehaviour
     private IEnumerator _Reload()
     {
         Debug.Log(name + ": Start Reloading");
-        _reloadStartEvent.Invoke();
+        _onReloadStart.Invoke();
         yield return new WaitForSeconds(_reloadDelay);
         _roundsRemaining = _magazineCapacity;
         _reloadCoroutine = null;
-        _reloadEndEvent.Invoke();
+        _onReloadEnd.Invoke();
         Debug.Log(name + ": End Reloading");
     }
 
